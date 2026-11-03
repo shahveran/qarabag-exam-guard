@@ -2,48 +2,138 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8">
-  <title>Qarabag Exam Guard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İmtahan Təhlükəsizlik Sistemi | Qarabağ Universiteti</title>
+  <style>
+    :root {
+      --primary: #44756b;
+      --primary-dark: #335750;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+    }
+    body {
+      margin: 0;
+      padding: 30px 20px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    .logo-badge {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: #e6f0ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      color: var(--primary-dark);
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #15803d;
+      font-weight: 600;
+      font-size: 13.5px;
+      margin-bottom: 24px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      text-align: left;
+      margin: 24px 0;
+    }
+    .feature-item {
+      background: #f1f5f9;
+      padding: 16px;
+      border-radius: 12px;
+      border-left: 4px solid var(--primary);
+    }
+    .feature-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14.5px;
+      color: #1e293b;
+    }
+    .feature-item span {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+    .info-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 13.5px;
+      color: #166534;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+  </style>
 </head>
 <body>
-  <script>
-    /**
-     * 🛡️ Qarabag University - Blackboard Ultra Extension
-     * Hosted directly on GitHub Pages!
-     */
-    (function () {
-      console.log("[Qarabag Exam Guard] GitHub Pages aktivdir!");
+  <div class="container">
+    <div class="card">
+      <div class="logo-badge">🛡️</div>
+      <h1>İmtahan Təhlükəsizlik Sistemi</h1>
+      <div class="status-pill">✅ Sistem Aktivdir və Blackboard-a Qoşulub</div>
 
-      // 1. Blackboard Ultra ilə əlaqə yaradırıq (Handshake)
+      <p style="color: #475569; font-size: 15px; margin: 0 0 20px;">
+        Qarabağ Universiteti tələbələri üçün imtahan sessiyalarında şəffaflığı təmin edən avtomatlaşdırılmış nəzarət modulu.
+      </p>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <strong>🚫 Pəncərə Çıxış Nəzarəti</strong>
+          <span>Alt+Tab, yeni brauzer tabı və ya mobil tətbiqlərə keçid anında xəbərdarlıq qeydə alınır.</span>
+        </div>
+        <div class="feature-item">
+          <strong>🤖 Süni İntellekt (AI) Bloku</strong>
+          <span>ChatGPT, Claude və köməkçi AI uzantılarının imtahan zamanı istifadəsi məhdudlaşdırılır.</span>
+        </div>
+        <div class="feature-item">
+          <strong>📋 Copy/Paste Qadağası</strong>
+          <span>Sualların mətndən kopyalanması və xarici cavabların yapışdırılması deaktiv edilir.</span>
+        </div>
+      </div>
+
+      <div class="info-box">
+        💡 <b>Məlumat:</b> Bu alət fənn üzrə aktivləşdirildikdə, tələbələr imtahanı bu səhifə daxilindən başladaraq təhlükəsizlik qaydalarına riayət etməklə imtahanı tamamlayırlar.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // UEF Handshake (Ana Blackboard pəncərəsinə xəbər verir)
+    try {
       window.parent.postMessage({
         type: 'authorization:authorize',
-        data: { token: 'qu_exam_token' }
+        data: { status: 'ready', app: 'Qarabag Exam Guard' }
       }, '*');
-
-      // 2. Tələbənin imtahan səhifəsində olmasını dinləyirik
-      window.addEventListener('message', function (e) {
-        if (!e.data) return;
-
-        // Blackboard Ultra marşrut dəyişməsi
-        if (e.data.type === 'portal:route-change') {
-          var path = (e.data.routeData && e.data.routeData.path) || '';
-          if (path.indexOf('/assessment/') !== -1 || path.indexOf('/test/') !== -1) {
-            triggerExamAlert();
-          }
-        }
-      });
-
-      function triggerExamAlert() {
-        // Blackboard ekranında bildiriş çıxarırıq
-        window.parent.postMessage({
-          type: 'portal:notification',
-          data: {
-            status: 'warning',
-            message: '🛡️ QARABAĞ UNİVERSİTETİ: İmtahan müddətində kənar pəncərələrə və AI alətlərinə keçid qadağandır!'
-          }
-        }, '*');
-      }
-    })();
+    } catch(e) {}
   </script>
 </body>
 </html>
-
