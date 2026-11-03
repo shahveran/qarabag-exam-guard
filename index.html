@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <title>Qarabag Exam Guard</title>
+</head>
+<body>
+  <script>
+    /**
+     * 🛡️ Qarabag University - Blackboard Ultra Extension
+     * Hosted directly on GitHub Pages!
+     */
+    (function () {
+      console.log("[Qarabag Exam Guard] GitHub Pages aktivdir!");
+
+      // 1. Blackboard Ultra ilə əlaqə yaradırıq (Handshake)
+      window.parent.postMessage({
+        type: 'authorization:authorize',
+        data: { token: 'qu_exam_token' }
+      }, '*');
+
+      // 2. Tələbənin imtahan səhifəsində olmasını dinləyirik
+      window.addEventListener('message', function (e) {
+        if (!e.data) return;
+
+        // Blackboard Ultra marşrut dəyişməsi
+        if (e.data.type === 'portal:route-change') {
+          var path = (e.data.routeData && e.data.routeData.path) || '';
+          if (path.indexOf('/assessment/') !== -1 || path.indexOf('/test/') !== -1) {
+            triggerExamAlert();
+          }
+        }
+      });
+
+      function triggerExamAlert() {
+        // Blackboard ekranında bildiriş çıxarırıq
+        window.parent.postMessage({
+          type: 'portal:notification',
+          data: {
+            status: 'warning',
+            message: '🛡️ QARABAĞ UNİVERSİTETİ: İmtahan müddətində kənar pəncərələrə və AI alətlərinə keçid qadağandır!'
+          }
+        }, '*');
+      }
+    })();
+  </script>
+</body>
+</html>
+
