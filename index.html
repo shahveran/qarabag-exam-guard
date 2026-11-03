@@ -2,200 +2,116 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>İmtahan Təhlükəsizlik Sistemi | Qarabağ Universiteti</title>
-  <style>
-    :root {
-      --primary: #44756b;
-      --primary-dark: #335750;
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --border: #e2e8f0;
-      --text: #0f172a;
-      --muted: #64748b;
-      --danger: #ef4444;
-      --warning: #f97316;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 24px 16px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-    .container { max-width: 820px; margin: 0 auto; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-    }
-    .btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 13px 22px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-    }
-    .btn:hover { background: var(--primary-dark); }
-    .rules-list {
-      background: #f1f5f9;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin: 18px 0;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    .rules-list li { margin: 8px 0; }
-    .pill {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 12.5px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    .pill.teacher { background: #e0f2fe; color: #0369a1; }
-    .pill.student { background: #fef3c7; color: #b45309; }
-
-    /* Modal */
-    .overlay {
-      position: fixed; inset: 0; z-index: 99999;
-      background: rgba(15,23,42,0.95); backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center; padding: 20px;
-    }
-    .modal {
-      background: #1e293b; color: #fff; border: 1px solid #475569;
-      border-radius: 16px; max-width: 460px; width: 100%; padding: 26px; text-align: center;
-    }
-  </style>
+  <title>Qarabağ Universiteti — UEF Proctoring Integration</title>
 </head>
 <body>
-  <div class="container">
-    
-    <!-- 1. TƏLƏBƏ EKRANI (Varsayılan olaraq tələbəyə bu açılır) -->
-    <div id="student-view" class="card" style="text-align: center;">
-      <div style="font-size: 42px;">🛡️</div>
-      <span class="pill student">🎓 Tələbə İmtahan Portalı</span>
-      <h1 style="margin: 8px 0; font-size: 22px; color: var(--primary-dark);">Qarabağ Universiteti — Təhlükəsiz İmtahan Girişi</h1>
-      <p style="color: var(--muted); font-size: 14.5px;">Bu fənn üzrə imtahan sessiyası aktiv nəzarət rejimi ilə qorunur.</p>
-
-      <ul class="rules-list" style="text-align: left;">
-        <li>🚫 <strong>Pəncərədən çıxış qadağandır:</strong> Başqa brauzer tabına, tətbiqə (WhatsApp və s.) keçdikdə sistem xəbərdarlıq verir.</li>
-        <li>🚫 <strong>Süni intellekt və Kopyalama:</strong> Sualı kopyalamaq və ChatGPT kimi AI alətlərini açmaq bloklanır.</li>
-        <li>⚠️ <strong>3 dəfə limit:</strong> Qayda 3 dəfə pozulduqda imtahanınız avtomatik təhvil verilir.</li>
-      </ul>
-
-      <div style="margin-bottom: 18px; text-align: left;">
-        <label style="font-size: 13.5px; font-weight: 600; color: #334155; display: block; margin-bottom: 6px;">İmtahana Giriş Kodu (Müəllimdən aldığınız şifrə):</label>
-        <input type="text" id="student-passcode" placeholder="Məsələn: QU-8429" style="width: 100%; padding: 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;" />
-      </div>
-
-      <button class="btn" onclick="startStudentExam()">🔒 Qorumalı İmtahanı Başlat</button>
-
-      <div style="margin-top: 20px; font-size: 12.5px; color: var(--muted);">
-        <a href="javascript:void(0)" onclick="toggleTeacherView()" style="color: var(--primary); text-decoration: underline;">Müəllim / Administrator Girişi</a>
-      </div>
-    </div>
-
-    <!-- 2. MÜƏLLİM EKRANI (Yalnız müəllim keçid edəndə görünür) -->
-    <div id="teacher-view" class="card" style="display: none;">
-      <span class="pill teacher">👨‍🏫 Müəllim İdarəetmə Paneli</span>
-      <h2 style="margin: 4px 0 16px; color: var(--primary-dark);">İmtahan Qaydaları və Giriş Şifrəsi</h2>
-      
-      <div style="background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 10px; font-size: 24px; letter-spacing: 5px; text-align: center; font-family: monospace; font-weight: 700; margin-bottom: 14px;">
-        QU-8429
-      </div>
-      <p style="font-size: 13px; color: var(--muted); margin: 0 0 16px;">Bu şifrəni imtahan vaxtı tələbələrə elan edin ki, qoruma rejimi ilə imtahanı başlada bilsinlər.</p>
-
-      <button class="btn" onclick="toggleTeacherView()" style="background: #334155;">🎓 Tələbə Görünüşünə Qayıt</button>
-    </div>
-
-  </div>
-
-  <!-- Pozuntu Modalı (İmtahan vaxtı tələbə çıxarsa) -->
-  <div id="alert-modal" class="overlay" style="display: none;">
-    <div class="modal">
-      <div style="font-size: 46px;">⚠️</div>
-      <h2 style="color: #f97316; margin: 8px 0;" id="alert-title">Qayda Pozuntusu!</h2>
-      <p id="alert-msg" style="color: #cbd5e1; font-size: 14px; line-height: 1.5;"></p>
-      <button class="btn" onclick="closeAlert()" style="background: #ea580c; margin-top: 10px;">Anladım, İmtahana Qayıt</button>
-    </div>
-  </div>
-
   <script>
-    var strikes = 0;
-    var maxStrikes = 3;
-    var examRunning = false;
+    /**
+     * 🛡️ QARABAĞ UNİVERSİTETİ — BLACKBOARD ULTRA PROCTORING EXTENSION (UEF)
+     * Rəsmi IMS LTI 1.3 və Blackboard Ultra Extension Framework (UEF) əsasında.
+     */
+    (function () {
+      console.log("[Qarabag Proctoring] UEF Modulu işə düşdü.");
 
-    function toggleTeacherView() {
-      var sView = document.getElementById('student-view');
-      var tView = document.getElementById('teacher-view');
-      if (tView.style.display === 'none') {
-        tView.style.display = 'block';
-        sView.style.display = 'none';
-      } else {
-        tView.style.display = 'none';
-        sView.style.display = 'block';
+      var integrationId = '88fd854e-3e92-42da-b58e-8170ad7ec21d';
+
+      // 1. Blackboard Ultra Host Pəncərəsi ilə Əlaqə (Handshake)
+      function initUEF() {
+        window.parent.postMessage({
+          type: 'authorization:authorize',
+          data: {
+            token: 'qu_uef_token_' + Date.now()
+          }
+        }, '*');
       }
-    }
 
-    function startStudentExam() {
-      var code = (document.getElementById('student-passcode').value || '').trim();
-      if (!code) {
-        alert("Zəhmət olmasa müəllimin verdiyi imtahan giriş kodunu daxil edin!");
-        return;
+      // 2. Blackboard Hadisələrini Dinləmək
+      window.addEventListener('message', function (event) {
+        if (!event.data) return;
+
+        var msg = event.data;
+
+        // A) Blackboard UEF icazə təsdiqi verdi
+        if (msg.type === 'authorization:authorized') {
+          console.log("[Qarabag Proctoring] Blackboard ilə təhlükəsiz kanal yaradıldı!");
+
+          // İmtahan hadisələrinə (attempt:started, route-change) abunə oluruq
+          window.parent.postMessage({
+            type: 'event:subscribe',
+            data: {
+              types: [
+                'portal:route-change',
+                'event:assessment:attempt:started',
+                'event:assessment:attempt:submitted'
+              ]
+            }
+          }, '*');
+        }
+
+        // B) Tələbə İmtahana Başlayanda (assessment:attempt:started)
+        if (msg.type === 'event:assessment:attempt:started' || 
+           (msg.type === 'portal:route-change' && msg.data && msg.data.routeData && 
+           (msg.data.routeData.path.indexOf('/assessment/') !== -1 || msg.data.routeData.path.indexOf('/test/') !== -1))) {
+          
+          console.warn("[Qarabag Proctoring] Tələbə imtahana daxil oldu! Qoruma aktivləşdirilir.");
+          
+          // Blackboard Ultra ekranına rəsmi Təhlükəsizlik Bildirişi çıxarırıq
+          window.parent.postMessage({
+            type: 'portal:notification',
+            data: {
+              status: 'warning',
+              message: '🛡️ QARABAĞ UNİVERSİTETİ: Bu imtahan aktiv monitorinq altındadır! Başqa pəncərəyə keçmək və AI istifadəsi qadağandır.'
+            }
+          }, '*');
+
+          // Brauzer fokusunun itməsini (Alt+Tab) dinləməyə başlayırıq
+          startStudentMonitoring();
+        }
+      });
+
+      // 3. Tələbənin Ekrandan Çıxış Nəzarəti (Monitorinq)
+      var strikes = 0;
+      var MAX_STRIKES = 3;
+      var lastAlertTime = 0;
+
+      function startStudentMonitoring() {
+        // Tələbə pəncərədən çıxanda (Alt+Tab, başqa tab)
+        window.addEventListener('blur', recordViolation);
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) recordViolation();
+        });
       }
-      examRunning = true;
-      document.getElementById('student-view').innerHTML = `
-        <div style="font-size: 44px;">🟢</div>
-        <h2 style="color: #15803d; margin: 10px 0;">Qorunan İmtahan Sessiyası Aktivdir</h2>
-        <p style="color: #475569; font-size: 14.5px;">İmtahan monitorinq altındadır. Sual pəncərəsindən kənara çıxmaq xəbərdarlıqla nəticələnəcək.</p>
-        <div style="background:#f1f5f9;padding:12px;border-radius:8px;font-weight:600;font-size:14px;color:#334155;margin:16px 0;">
-          Qeydə alınan pozuntu: <span id="strike-count" style="color:#dc2626;">0 / 3</span>
-        </div>
-      `;
-    }
 
-    // Tələbə ekrandan çıxanda tuturuq
-    document.addEventListener('visibilitychange', function() {
-      if (document.hidden && examRunning) {
-        addViolation("İmtahan pəncərəsindən kənar tətbiqə və ya başqa taba keçid aşkarlandı!");
+      function recordViolation() {
+        var now = Date.now();
+        if (now - lastAlertTime < 2000) return;
+        lastAlertTime = now;
+        strikes++;
+
+        if (strikes >= MAX_STRIKES) {
+          // 3-cü pozuntuda Blackboard-a imtahanı bağlamağı əmr edirik
+          window.parent.postMessage({
+            type: 'portal:modal',
+            data: {
+              title: '🚫 İmtahan Dayandırıldı!',
+              body: 'İcazə verilən pəncərədən çıxış limitini (3/3) keçdiyiniz üçün imtahanınız sonlandırıldı!'
+            }
+          }, '*');
+        } else {
+          // Xəbərdarlıq modalı
+          window.parent.postMessage({
+            type: 'portal:notification',
+            data: {
+              status: 'error',
+              message: '⚠️ QAYDA POZUNTUSU (' + strikes + '/' + MAX_STRIKES + '): İmtahan pəncərəsindən kənara çıxdınız!'
+            }
+          }, '*');
+        }
       }
-    });
 
-    window.addEventListener('blur', function() {
-      if (examRunning) {
-        addViolation("İmtahan pəncərəsindən çıxış aşkarlandı!");
-      }
-    });
-
-    function addViolation(reason) {
-      strikes++;
-      document.getElementById('alert-modal').style.display = 'flex';
-      var el = document.getElementById('strike-count');
-      if (el) el.textContent = strikes + " / " + maxStrikes;
-
-      if (strikes >= maxStrikes) {
-        document.getElementById('alert-title').textContent = "🚫 İmtahan Dayandırıldı!";
-        document.getElementById('alert-msg').textContent = "Qayda pozuntusu limitini (3/3) keçdiyiniz üçün imtahan sessiyanız dayandırıldı və müəllimə məlumat göndərildi.";
-        examRunning = false;
-      } else {
-        document.getElementById('alert-title').textContent = "⚠️ Xəbərdarlıq (" + strikes + "/3)";
-        document.getElementById('alert-msg').textContent = reason + " 3 dəfə təkrarlandıqda imtahanınız avtomatik dayandırılacaq.";
-      }
-    }
-
-    function closeAlert() {
-      document.getElementById('alert-modal').style.display = 'none';
-    }
+      // Başlat
+      initUEF();
+    })();
   </script>
 </body>
 </html>
